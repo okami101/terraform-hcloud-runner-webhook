@@ -1,5 +1,5 @@
 locals {
-  cache_mount_path     = "/mnt/HC_Volume_${volume_cache_id}"
+  cache_mount_path     = "/mnt/HC_Volume_${var.volume_cache_id}"
   act_config_file_path = "/etc/act/config.yaml"
   act_cache_port       = 8088
   cloud_init = {
