@@ -45,7 +45,7 @@ locals {
               volumes = [
                 "${local.act_config_file_path}:${local.act_config_file_path}",
                 "${local.cache_mount_path}/actdata:/data",
-                "${local.cache_mount_path}:/root/.cache",
+                "${local.cache_mount_path}/actcache:/root/.cache",
                 "/var/run/docker.sock:/var/run/docker.sock",
               ]
             }
