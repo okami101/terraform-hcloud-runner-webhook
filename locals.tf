@@ -54,6 +54,7 @@ locals {
       },
     ]
     runcmd = [
+      "sleep 30",
       "systemctl restart docker",
       "docker compose -f /runner/compose.yaml up -d",
     ]
