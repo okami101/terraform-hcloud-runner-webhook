@@ -20,5 +20,4 @@ EOT
 resource "hcloud_volume_attachment" "cache" {
   volume_id = var.volume_cache_id
   server_id = hcloud_server.server.id
-  automount = true
 }

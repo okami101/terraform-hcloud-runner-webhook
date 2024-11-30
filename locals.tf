@@ -8,7 +8,7 @@ locals {
         path        = "/etc/docker/daemon.json"
         permissions = "0644"
         content = jsonencode({
-          "data-root" = "${local.cache_mount_path}/docker"
+          "data-root" = "/var/lib/docker"
         })
       },
       {
@@ -54,7 +54,9 @@ locals {
       },
     ]
     runcmd = [
-      "sleep 300",
+      "mkdir ${local.cache_mount_path}",
+      "mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_${var.volume_cache_id} ${local.cache_mount_path}",
+      "sed /etc/docker/daemon.json -i -e 's/\\/var\\/lib\\/docker/${local.cache_mount_path}/g'",
       "systemctl restart docker",
       "docker compose -f /runner/compose.yaml up -d",
     ]
