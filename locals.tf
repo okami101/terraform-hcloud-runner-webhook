@@ -54,8 +54,7 @@ locals {
       },
     ]
     runcmd = [
-      "mkdir ${local.cache_mount_path}",
-      "mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_${var.volume_cache_id} ${local.cache_mount_path}",
+      "sleep 300",
       "systemctl restart docker",
       "docker compose -f /runner/compose.yaml up -d",
     ]
