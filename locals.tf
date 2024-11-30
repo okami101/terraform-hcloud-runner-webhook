@@ -1,4 +1,5 @@
 locals {
+  cache_mount_path     = "/mnt/HC_Volume_${volume_cache_id}"
   act_config_file_path = "/etc/act/config.yaml"
   act_cache_port       = 8088
   cloud_init = {
@@ -7,7 +8,7 @@ locals {
         path        = "/etc/docker/daemon.json"
         permissions = "0644"
         content = jsonencode({
-          "data-root" = "${var.cache_mount_path}/docker"
+          "data-root" = "${local.cache_mount_path}/docker"
         })
       },
       {
@@ -43,8 +44,8 @@ locals {
               ]
               volumes = [
                 "${local.act_config_file_path}:${local.act_config_file_path}",
-                "${var.cache_mount_path}/actdata:/data",
-                "${var.cache_mount_path}:/root/.cache",
+                "${local.cache_mount_path}/actdata:/data",
+                "${local.cache_mount_path}:/root/.cache",
                 "/var/run/docker.sock:/var/run/docker.sock",
               ]
             }
@@ -53,8 +54,6 @@ locals {
       },
     ]
     runcmd = [
-      "mkdir ${var.cache_mount_path}",
-      "mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_${var.volume_cache_id} ${var.cache_mount_path}",
       "systemctl restart docker",
       "docker compose -f /runner/compose.yaml up -d",
     ]

@@ -20,10 +20,6 @@ variable "volume_cache_id" {
   description = "ID of the volume to be used as cache"
 }
 
-variable "cache_mount_path" {
-  description = "Path to mount the cache volume"
-}
-
 variable "gitea_instance_url" {
   description = "URL of the Gitea instance"
 }
