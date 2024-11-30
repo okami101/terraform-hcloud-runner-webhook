@@ -1,6 +1,6 @@
 resource "hcloud_server" "server" {
   name        = var.server_name
-  server_type = "cpx31"
+  server_type = var.server_type
   location    = var.server_location
   image       = "docker-ce"
   ssh_keys    = var.hcloud_ssh_keys

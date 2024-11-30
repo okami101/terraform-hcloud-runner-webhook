@@ -12,6 +12,10 @@ variable "server_name" {
   description = "Name of the server"
 }
 
+variable "server_type" {
+  description = "Type of the server"
+}
+
 variable "server_location" {
   description = "Name of the server"
 }
