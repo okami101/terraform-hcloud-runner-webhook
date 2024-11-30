@@ -56,7 +56,7 @@ locals {
     runcmd = [
       "mkdir ${local.cache_mount_path}",
       "mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_${var.volume_cache_id} ${local.cache_mount_path}",
-      "sed -i 's|\"data-root\": *\"/[^\"]*\"|\"data-root\": \"${local.cache_mount_path}\"|g' /etc/docker/daemon.json",
+      "sed -i 's|/var/lib|${local.cache_mount_path}|g' /etc/docker/daemon.json",
       "systemctl restart docker",
       "docker compose -f /runner/compose.yaml up -d",
     ]
