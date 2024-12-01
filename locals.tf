@@ -1,18 +1,20 @@
 locals {
-  cache_mount_path     = "/mnt/HC_Volume_${var.volume_cache_id}"
-  act_config_file_path = "/etc/act/config.yaml"
-  act_cache_port       = 8088
+  cache_mount_path        = "/mnt/HC_Volume_${var.volume_cache_id}"
+  act_config_file_path    = "/etc/act/config.yaml"
+  act_compose_file_path   = "/runner/compose.yaml"
+  docker_config_file_path = "/etc/docker/daemon.json"
+  act_cache_port          = 8088
   cloud_init = {
     write_files = [
       {
-        path        = "/etc/docker/daemon.json"
+        path        = local.docker_config_file_path
         permissions = "0644"
         content = jsonencode({
           "data-root" = "/var/lib/docker"
         })
       },
       {
-        path        = "/etc/act/config.yaml"
+        path        = local.act_config_file_path
         permissions = "0644"
         content = yamlencode({
           log = {
@@ -28,7 +30,7 @@ locals {
         })
       },
       {
-        path        = "/runner/compose.yaml"
+        path        = local.act_compose_file_path
         permissions = "0644"
         content = yamlencode({
           services = {
@@ -56,9 +58,9 @@ locals {
     runcmd = [
       "mkdir ${local.cache_mount_path}",
       "mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_${var.volume_cache_id} ${local.cache_mount_path}",
-      "sed -i 's|/var/lib|${local.cache_mount_path}|g' /etc/docker/daemon.json",
+      "sed -i 's|/var/lib|${local.cache_mount_path}|g' ${local.docker_config_file_path}",
       "systemctl restart docker",
-      "docker compose -f /runner/compose.yaml up -d",
+      "docker compose -f ${local.act_compose_file_path} up -d",
     ]
   }
 }
