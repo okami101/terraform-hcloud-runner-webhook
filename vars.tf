@@ -20,6 +20,14 @@ variable "server_location" {
   description = "Name of the server"
 }
 
+variable "primary_ipv4_id" {
+  description = "ID of IPV4 primary IP"
+}
+
+variable "primary_ipv6_id" {
+  description = "ID of IPV6 primary IP"
+}
+
 variable "volume_cache_id" {
   description = "ID of the volume to be used as cache"
 }

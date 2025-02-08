@@ -3,7 +3,11 @@ resource "hcloud_server" "server" {
   server_type = var.server_type
   location    = var.server_location
   image       = "docker-ce"
-  ssh_keys    = var.hcloud_ssh_keys
+  public_net {
+    ipv4 = var.primary_ipv4_id
+    ipv6 = var.primary_ipv6_id
+  }
+  ssh_keys = var.hcloud_ssh_keys
   lifecycle {
     ignore_changes = [
       user_data,
