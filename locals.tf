@@ -43,7 +43,8 @@ locals {
                 GITEA_INSTANCE_URL              = var.gitea_instance_url
                 GITEA_RUNNER_REGISTRATION_TOKEN = var.gitea_runner_registration_token
               }
-              image = "gitea/act_runner:nightly"
+              image   = "gitea/act_runner:nightly"
+              restart = "always"
               ports = [
                 "${local.act_cache_port}:${local.act_cache_port}",
               ]
