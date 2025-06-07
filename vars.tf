@@ -51,7 +51,6 @@ variable "buildx_servers" {
     server_name     = string
     server_type     = string
     server_location = string
-    volume_cache_id = string
     hcloud_ssh_keys = list(string)
     private_ipv4    = string
   }))
