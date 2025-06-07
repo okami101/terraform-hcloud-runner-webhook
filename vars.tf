@@ -20,6 +20,10 @@ variable "server_location" {
   description = "Name of the server"
 }
 
+variable "network_id" {
+  description = "ID of the network to which the server will be connected"
+}
+
 variable "primary_ipv4_id" {
   description = "ID of IPV4 primary IP"
 }
@@ -39,4 +43,16 @@ variable "gitea_instance_url" {
 variable "gitea_runner_registration_token" {
   description = "Registration token for the Gitea runner"
   sensitive   = true
+}
+
+variable "buildx_servers" {
+  description = "List of buildx servers with their configurations"
+  type = list(object({
+    server_name     = string
+    server_type     = string
+    server_location = string
+    volume_cache_id = string
+    hcloud_ssh_keys = list(string)
+    private_ipv4    = string
+  }))
 }
