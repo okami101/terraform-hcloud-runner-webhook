@@ -5,9 +5,9 @@ locals {
   docker_config_file_path = "/etc/docker/daemon.json"
   act_cache_port          = 8088
   cloud_init = {
-    reboot_if_required = true
-    update_packages    = true
-    upgrade_packages   = true
+    package_reboot_if_required = true
+    package_update             = true
+    package_upgrade            = true
     write_files = [
       {
         path        = local.docker_config_file_path

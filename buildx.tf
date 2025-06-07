@@ -20,9 +20,9 @@ resource "hcloud_server" "buildx" {
   user_data = <<-EOT
 #cloud-config
 ${yamlencode({
-  reboot_if_required = true
-  update_packages    = true
-  upgrade_packages   = true
+  package_reboot_if_required = true
+  package_update             = true
+  package_upgrade            = true
 })}
 EOT
 }
