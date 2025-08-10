@@ -54,4 +54,5 @@ variable "buildx_servers" {
     hcloud_ssh_keys = list(string)
     private_ipv4    = string
   }))
+  default = []
 }
