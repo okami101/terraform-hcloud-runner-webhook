@@ -1,6 +1,8 @@
-from flask import Flask, request, jsonify
-import subprocess
 import os
+import hmac
+import hashlib
+import subprocess
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 TERRAFORM_DIR = "/app/terraform"
@@ -8,9 +10,16 @@ TERRAFORM_DIR = "/app/terraform"
 
 @app.route("/webhook", methods=["POST"])
 def webhook():
-    secret = request.headers.get("X-Webhook-Token")
-    if secret != os.environ.get("WEBHOOK_TOKEN", "changeme"):
-        return jsonify({"status": "forbidden"}), 403
+    webhook_token = os.environ.get("WEBHOOK_TOKEN", "changeme")
+    signature_received = request.headers.get("X-Gitea-Signature", "")
+    body_bytes = request.get_data()
+
+    signature_calculated = hmac.new(
+        key=webhook_token.encode(), msg=body_bytes, digestmod=hashlib.sha256
+    ).hexdigest()
+
+    if not hmac.compare_digest(signature_received, signature_calculated):
+        return jsonify({"message": "Invalid key"}), 403
 
     try:
         result = subprocess.run(
