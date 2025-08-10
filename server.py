@@ -27,9 +27,24 @@ def webhook():
             cwd=TERRAFORM_DIR,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            text=True
+            text=True,
         )
-        return jsonify({"status": "started"})
+        return jsonify({"status": "creating..."})
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
+@app.route("/destroy", methods=["POST"])
+def destroy():
+    try:
+        subprocess.Popen(
+            ["terraform", "destroy", "-auto-approve"],
+            cwd=TERRAFORM_DIR,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        return jsonify({"status": "destroying..."})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
