@@ -34,7 +34,7 @@ def webhook():
         return jsonify({"status": "error", "message": str(e)}), 500
 
 
-@app.route("/destroy", methods=["POST"])
+@app.route("/destroy", methods=["DELETE"])
 def destroy():
     try:
         subprocess.Popen(
