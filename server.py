@@ -22,15 +22,14 @@ def webhook():
         return jsonify({"message": "Invalid key"}), 403
 
     try:
-        result = subprocess.run(
+        subprocess.Popen(
             ["terraform", "apply", "-auto-approve"],
             cwd=TERRAFORM_DIR,
-            capture_output=True,
-            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
         )
-        return jsonify(
-            {"status": "success", "stdout": result.stdout, "stderr": result.stderr}
-        )
+        return jsonify({"status": "started"})
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
