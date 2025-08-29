@@ -2,7 +2,7 @@ resource "hcloud_server" "runner" {
   name        = var.server_name
   server_type = var.server_type
   location    = var.server_location
-  image       = "docker-ce"
+  image       = "debian-13"
   public_net {
     ipv4 = var.primary_ipv4_id
     ipv6 = var.primary_ipv6_id

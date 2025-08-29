@@ -3,7 +3,7 @@ resource "hcloud_server" "buildx" {
   name        = each.value.server_name
   server_type = each.value.server_type
   location    = each.value.server_location
-  image       = "docker-ce"
+  image       = "debian-13"
   network {
     network_id = var.network_id
     ip         = each.value.private_ipv4
@@ -20,9 +20,10 @@ resource "hcloud_server" "buildx" {
   user_data = <<-EOT
 #cloud-config
 ${yamlencode({
-  package_reboot_if_required = true
-  package_update             = true
-  package_upgrade            = true
+  runcmd = [
+    "curl -fsSL https://get.docker.com -o get-docker.sh",
+    "sh get-docker.sh"
+  ]
 })}
 EOT
 }

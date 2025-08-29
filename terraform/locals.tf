@@ -63,7 +63,8 @@ locals {
       "mkdir ${local.cache_mount_path}",
       "mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_${var.volume_cache_id} ${local.cache_mount_path}",
       "sed -i 's|/var/lib|${local.cache_mount_path}|g' ${local.docker_config_file_path}",
-      "systemctl restart docker",
+      "curl -fsSL https://get.docker.com -o get-docker.sh",
+      "sh get-docker.sh",
       "docker compose -f ${local.act_compose_file_path} up -d"
     ]
   }
