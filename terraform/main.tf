@@ -15,7 +15,8 @@ resource "hcloud_server" "runner" {
     ignore_changes = [
       user_data,
       ssh_keys,
-      image
+      image,
+      network
     ]
   }
   user_data = <<-EOT
