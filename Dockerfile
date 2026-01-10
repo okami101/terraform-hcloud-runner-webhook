@@ -1,6 +1,6 @@
-FROM python:3.12-alpine
+FROM python:3.14-alpine
 
-ENV TERRAFORM_VERSION=1.13.5
+ENV TERRAFORM_VERSION=1.14.3
 
 RUN apk add --no-cache ca-certificates unzip wget \
   && update-ca-certificates \
