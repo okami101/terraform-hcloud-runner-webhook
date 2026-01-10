@@ -57,6 +57,7 @@ locals {
       }
     ]
     runcmd = [
+      "sleep 60",
       "mkdir ${local.cache_mount_path}",
       "mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_${var.volume_cache_id} ${local.cache_mount_path}",
       "sed -i 's|/var/lib|${local.cache_mount_path}|g' ${local.docker_config_file_path}",
