@@ -63,6 +63,7 @@ locals {
       "sed -i 's|/var/lib|${local.cache_mount_path}|g' ${local.docker_config_file_path}",
       "curl -fsSL https://get.docker.com -o get-docker.sh",
       "sh get-docker.sh",
+      "sleep 30",
       "docker compose -f ${local.act_compose_file_path} pull",
       "docker compose -f ${local.act_compose_file_path} up -d"
     ]
