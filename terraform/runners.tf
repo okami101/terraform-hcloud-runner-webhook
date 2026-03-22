@@ -42,11 +42,6 @@ ${yamlencode(each.value.type == "buildx" ?
     packages = []
     write_files = [
       {
-        path    = "/etc/cloud/templates/hosts.debian.tmpl"
-        append  = true
-        content = join("\n", [for host in var.runners : "${host.private_ipv4} ${host.server_name}" if host.type == "buildx"])
-      },
-      {
         path        = local.docker_config_file_path
         permissions = "0644"
         content = jsonencode({
@@ -66,6 +61,11 @@ ${yamlencode(each.value.type == "buildx" ?
           cache = {
             host = "172.17.0.1"
             port = local.act_cache_port
+          }
+          container = {
+            options = join(" ", [
+              for host in var.runners : "--add-host=${host.server_name}:${host.private_ipv4}" if host.type == "buildx"
+            ])
           }
         })
       },
