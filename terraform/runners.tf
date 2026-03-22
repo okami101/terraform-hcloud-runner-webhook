@@ -112,7 +112,7 @@ EOT
 }
 
 resource "hcloud_volume_attachment" "runner_cache" {
-  for_each  = { for server in var.runners : server.server_name => server if server.type != "buildx" }
+  for_each  = { for server in var.runners : server.server_name => server }
   server_id = hcloud_server.runners[each.key].id
   volume_id = each.value.volume_cache_id
 }
