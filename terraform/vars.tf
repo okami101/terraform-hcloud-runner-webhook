@@ -8,32 +8,8 @@ variable "hcloud_ssh_keys" {
   type        = list(string)
 }
 
-variable "server_name" {
-  description = "Name of the server"
-}
-
-variable "server_type" {
-  description = "Type of the server"
-}
-
-variable "server_location" {
-  description = "Name of the server"
-}
-
 variable "network_id" {
   description = "ID of the network to which the server will be connected"
-}
-
-variable "primary_ipv4_id" {
-  description = "ID of IPV4 primary IP"
-}
-
-variable "primary_ipv6_id" {
-  description = "ID of IPV6 primary IP"
-}
-
-variable "volume_cache_id" {
-  description = "ID of the volume to be used as cache"
 }
 
 variable "gitea_instance_url" {
@@ -45,14 +21,22 @@ variable "gitea_runner_registration_token" {
   sensitive   = true
 }
 
-variable "buildx_servers" {
+variable "buildkit_version" {
+  description = "Version of BuildKit to be installed on buildx servers"
+  default     = "v0.28.0"
+}
+
+variable "runners" {
   description = "List of buildx servers with their configurations"
   type = list(object({
     server_name     = string
     server_type     = string
     server_location = string
-    hcloud_ssh_keys = list(string)
+    primary_ipv4_id = string
+    primary_ipv6_id = string
     private_ipv4    = string
+    volume_cache_id = string
+    type            = optional(string)
   }))
   default = []
 }
