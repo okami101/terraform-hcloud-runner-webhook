@@ -1,5 +1,5 @@
 resource "hcloud_server" "runners" {
-  for_each    = { for server in var.runners : server.server_name => server if server.type != "buildx" }
+  for_each    = { for server in var.runners : server.server_name => server }
   name        = each.value.server_name
   server_type = each.value.server_type
   location    = each.value.server_location
@@ -27,7 +27,6 @@ resource "hcloud_server" "runners" {
 ${yamlencode(each.value.type == "buildx" ?
   {
     packages    = ["git"]
-    hosts       = []
     write_files = []
     runcmd = [
       "sleep 60",
@@ -41,11 +40,12 @@ ${yamlencode(each.value.type == "buildx" ?
   } :
   {
     packages = []
-    hosts = [for host in var.runners : {
-      ip      = host.private_ipv4
-      aliases = [host.server_name]
-    } if host.type == "buildx"]
     write_files = [
+      {
+        path    = "/etc/cloud/templates/hosts.debian.tmpl"
+        append  = true
+        content = join("\n", [for host in var.runners : "${host.private_ipv4} ${host.server_name}" if host.type == "buildx"])
+      },
       {
         path        = local.docker_config_file_path
         permissions = "0644"
