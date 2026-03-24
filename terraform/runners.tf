@@ -90,6 +90,7 @@ ${yamlencode(each.value.type == "buildx" ?
       }
     ]
     runcmd = [
+      "sleep 60",
       "curl -fsSL https://get.docker.com -o get-docker.sh",
       "sh get-docker.sh",
       "mkdir ${local.cache_mount_path}",
