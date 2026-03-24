@@ -42,13 +42,6 @@ ${yamlencode(each.value.type == "buildx" ?
     packages = []
     write_files = [
       {
-        path        = local.docker_config_file_path
-        permissions = "0644"
-        content = jsonencode({
-          "data-root" = "/var/lib/docker"
-        })
-      },
-      {
         path        = local.act_config_file_path
         permissions = "0644"
         content = yamlencode({
@@ -97,12 +90,10 @@ ${yamlencode(each.value.type == "buildx" ?
       }
     ]
     runcmd = [
-      "sleep 60",
-      "mkdir ${local.cache_mount_path}",
-      "mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_${each.value.volume_cache_id} ${local.cache_mount_path}",
-      "sed -i 's|/var/lib|${local.cache_mount_path}|g' ${local.docker_config_file_path}",
       "curl -fsSL https://get.docker.com -o get-docker.sh",
       "sh get-docker.sh",
+      "mkdir ${local.cache_mount_path}",
+      "mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_${each.value.volume_cache_id} ${local.cache_mount_path}",
       "sleep 30",
       "docker compose -f ${local.act_compose_file_path} pull",
       "docker compose -f ${local.act_compose_file_path} up -d"
