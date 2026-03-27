@@ -26,6 +26,16 @@ variable "buildkit_version" {
   default     = "v0.28.0"
 }
 
+variable "runner_capacity" {
+  description = "Capacity of the Gitea runner"
+  default     = "3"
+}
+
+variable "runner_timeout" {
+  description = "Timeout for the Gitea runner"
+  default     = "6h"
+}
+
 variable "runners" {
   description = "List of buildx servers with their configurations"
   type = list(object({

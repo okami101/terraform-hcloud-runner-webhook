@@ -49,7 +49,8 @@ ${yamlencode(each.value.type == "buildx" ?
             level = "info"
           }
           runner = {
-            capacity = 3
+            capacity = var.runner_capacity
+            timeout  = var.runner_timeout
           }
           cache = {
             host = "172.17.0.1"
