@@ -28,7 +28,7 @@ variable "buildkit_version" {
 
 variable "runner_capacity" {
   description = "Capacity of the Gitea runner"
-  default     = "3"
+  default     = 3
 }
 
 variable "runner_timeout" {
