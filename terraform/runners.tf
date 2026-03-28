@@ -26,7 +26,7 @@ resource "hcloud_server" "runners" {
 #cloud-config
 ${yamlencode(each.value.type == "buildx" ?
   {
-    packages    = ["git"]
+    packages    = ["git", "qemu-user-static"]
     write_files = []
     runcmd = [
       "sleep 60",
