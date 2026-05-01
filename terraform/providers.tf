@@ -6,9 +6,9 @@ terraform {
     }
   }
 
-  # backend "local" {
-  #   path = "/data/terraform.tfstate"
-  # }
+  backend "local" {
+    path = "/data/terraform.tfstate"
+  }
 }
 
 provider "hcloud" {
