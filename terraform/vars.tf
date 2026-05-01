@@ -36,8 +36,13 @@ variable "runner_timeout" {
   default     = "6h"
 }
 
+variable "enable_buildx_runners" {
+  description = "Whether to enable configured buildx runners"
+  default     = false
+}
+
 variable "runners" {
-  description = "List of buildx servers with their configurations"
+  description = "List of runner servers with their configurations"
   type = list(object({
     server_name     = string
     server_type     = string
@@ -46,7 +51,17 @@ variable "runners" {
     primary_ipv6_id = string
     private_ipv4    = string
     volume_cache_id = string
-    type            = optional(string)
+  }))
+  default = []
+}
+
+variable "buildx_servers" {
+  description = "List of buildx servers with their configurations"
+  type = list(object({
+    server_name     = string
+    server_type     = string
+    server_location = string
+    private_ipv4    = string
   }))
   default = []
 }

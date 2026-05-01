@@ -1,3 +1,4 @@
+
 resource "hcloud_server" "runners" {
   for_each    = { for server in var.runners : server.server_name => server }
   name        = each.value.server_name
@@ -24,20 +25,7 @@ resource "hcloud_server" "runners" {
   }
   user_data = <<-EOT
 #cloud-config
-${yamlencode(each.value.type == "buildx" ?
-  {
-    packages    = ["git", "qemu-user-static"]
-    write_files = []
-    runcmd = [
-      "sleep 60",
-      "mkdir ${local.cache_mount_path}",
-      "mount -o discard,defaults /dev/disk/by-id/scsi-0HC_Volume_${each.value.volume_cache_id} ${local.cache_mount_path}",
-      "sleep 30",
-      "wget https://github.com/moby/buildkit/releases/download/${var.buildkit_version}/buildkit-${var.buildkit_version}.linux-${substr(each.value.server_type, 0, 3) == "cax" ? "arm64" : "amd64"}.tar.gz",
-      "tar xf buildkit-*.tar.gz -C /usr/local/bin --strip-components=1",
-      "buildkitd --addr tcp://${each.value.private_ipv4}:1234 --root ${local.cache_mount_path}/buildkit"
-    ]
-  } :
+${yamlencode(
   {
     packages = []
     write_files = [
@@ -58,7 +46,7 @@ ${yamlencode(each.value.type == "buildx" ?
           }
           container = {
             options = join(" ", [
-              for host in var.runners : "--add-host=${host.server_name}:${host.private_ipv4}" if host.type == "buildx"
+              for host in var.buildx_servers : "--add-host=${host.server_name}:${host.private_ipv4}"
             ])
           }
         })
