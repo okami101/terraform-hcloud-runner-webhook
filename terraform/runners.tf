@@ -56,7 +56,7 @@ ${yamlencode(
         permissions = "0644"
         content = yamlencode({
           services = {
-            act = {
+            runner = {
               environment = {
                 CONFIG_FILE                     = "/config.yaml"
                 GITEA_INSTANCE_URL              = var.gitea_instance_url
