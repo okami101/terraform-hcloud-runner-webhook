@@ -62,13 +62,13 @@ ${yamlencode(
                 GITEA_INSTANCE_URL              = var.gitea_instance_url
                 GITEA_RUNNER_REGISTRATION_TOKEN = var.gitea_runner_registration_token
               }
-              image   = "gitea/act_runner:nightly"
+              image   = "gitea/runner:3"
               restart = "always"
               ports = [
                 "${local.act_cache_port}:${local.act_cache_port}",
               ]
               volumes = [
-                "${local.act_config_file_path}:${local.act_config_file_path}",
+                "${local.act_config_file_path}:${local.act_config_file_path}:ro",
                 "${local.cache_mount_path}/actdata:/data",
                 "${local.cache_mount_path}/actcache:/root/.cache",
                 "/var/run/docker.sock:/var/run/docker.sock",
