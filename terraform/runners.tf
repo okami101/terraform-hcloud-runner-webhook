@@ -30,7 +30,7 @@ ${yamlencode(
     packages = []
     write_files = [
       {
-        path        = local.act_config_file_path
+        path        = "/runner/config.yaml"
         permissions = "0644"
         content = yamlencode({
           log = {
@@ -58,7 +58,7 @@ ${yamlencode(
           services = {
             act = {
               environment = {
-                CONFIG_FILE                     = local.act_config_file_path
+                CONFIG_FILE                     = "/config.yaml"
                 GITEA_INSTANCE_URL              = var.gitea_instance_url
                 GITEA_RUNNER_REGISTRATION_TOKEN = var.gitea_runner_registration_token
               }
@@ -68,9 +68,9 @@ ${yamlencode(
                 "${local.act_cache_port}:${local.act_cache_port}",
               ]
               volumes = [
-                "${local.act_config_file_path}:${local.act_config_file_path}:ro",
-                "${local.cache_mount_path}/actdata:/data",
-                "${local.cache_mount_path}/actcache:/root/.cache",
+                ".config.yaml:/config.yaml",
+                "${local.cache_mount_path}/data:/data",
+                "${local.cache_mount_path}/.cache:/root/.cache",
                 "/var/run/docker.sock:/var/run/docker.sock",
               ]
             }
