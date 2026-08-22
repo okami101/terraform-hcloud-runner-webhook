@@ -68,7 +68,7 @@ ${yamlencode(
                 "${local.act_cache_port}:${local.act_cache_port}",
               ]
               volumes = [
-                ".config.yaml:/config.yaml",
+                "./config.yaml:/config.yaml",
                 "${local.cache_mount_path}/data:/data",
                 "${local.cache_mount_path}/.cache:/root/.cache",
                 "/var/run/docker.sock:/var/run/docker.sock",
